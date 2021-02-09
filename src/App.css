@@ -1,7 +1,7 @@
 .App {
   /* text-align: center; */
   /* width: 66%; */
-  margin-left: 3em;
+  margin: 0 auto;
   color: #333;
   /* text-align: center; */
   transition: all;
@@ -13,8 +13,8 @@
   margin: .18em;
 }
 
-.App, .App input[type="text"] {
-  font: 3vw "Lucida Grande", Arial, sans-serif;
+.App {
+  font: 15vw Arial, "Lucida Grande", Arial, sans-serif;
 }
 
 .data {

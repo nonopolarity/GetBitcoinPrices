@@ -32,37 +32,29 @@ function App() {
   useEffect(() => {
     setInterval(() => {
       console.log("INTERVAL", timeSliceID, foo);
-      // timeSliceID++;
-      foo++;
       setTimeSliceID(timeSliceID => timeSliceID + 1);
-    }, 60000 * 5);
+    }, 15 * 1000);
   }, []);
 
-  //http://worldtimeapi.org/api/timezone/America/Los_Angeles
+  const priceOfBitcoin = () => {
+    console.log("PRICE", data?.bpi?.USD?.rate);
+    const priceString = data?.bpi?.USD?.rate;
+    const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
+    const priceRounded = Math.round(+price * 100) / 100;
 
-  const convertToUSD = (ev) => {
-    console.log("IN convertToUSD", ev.target.value);
-    const n = ev.target.value;
-    setNumBitcoin(n);
-    // setEquivUSD(n * bitcoinToUSDRatio);
-  };
+    return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
+    // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
+  }
+
 
   const isNumeric = a => {
     return (a !== "" && !isNaN(a));
   };
 
-  console.log("isNumeric(numBitcoin)", JSON.stringify(numBitcoin), isNumeric(numBitcoin));
   return (
     <div className="App">
-      <form>
-        Convert <input type="text" placeholder="number of" value={numBitcoin} onChange={convertToUSD} />
-        {pluralize("bitcoin", +numBitcoin)} to {isNumeric(numBitcoin) ? "" : "US$"}{isNumeric(numBitcoin) ? `US${new Intl.NumberFormat('us', { style: 'currency', currency: 'USD' }).format(equivUSD())}` : ""}
-        <div>
-          {isNumeric(numBitcoin) ? <span>{pluralize("bitcoin", +numBitcoin, true)} is USD {
-            new Intl.NumberFormat('us', { style: 'currency', currency: 'USD' }).format(equivUSD())}</span>
-            : <span>&nbsp;</span>}
-        </div>
-      </form>
+
+    ${ priceOfBitcoin() }
       {/* <pre className="data">
         {JSON.stringify(data, null, 4)}
       </pre> */}
