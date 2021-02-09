@@ -34,10 +34,12 @@ function App() {
     console.log("PRICE", data?.bpi?.USD?.rate);
     const priceString = data?.bpi?.USD?.rate;
     const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
-    const priceRounded = Math.round(+price * 100) / 100;
+    // const priceRounded = Math.round(+price * 100) / 100;
 
-    return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
+    // return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
     // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
+
+    return Math.round(price);
   }
 
 
