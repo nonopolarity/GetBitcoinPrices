@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import pluralize from "pluralize";
+// import pluralize from "pluralize";
 
 import './App.css';
 
@@ -9,13 +9,7 @@ import './App.css';
 
 function App() {
   const [data, setData] = useState({});
-  const [numBitcoin, setNumBitcoin] = useState("");
-  // const [equivUSD, setEquivUSD] = useState(0);
-  const [bitcoinToUSDRatio, setBitcoinToUSDRatio] = useState(0);
-  const [timeSliceID, setTimeSliceID] = useState(0);
-  let foo = 0;
-
-  const equivUSD = () => (numBitcoin * bitcoinToUSDRatio);
+   const [timeSliceID, setTimeSliceID] = useState(0);
 
   useEffect(() => {
     console.log("Fetching")
@@ -24,14 +18,14 @@ function App() {
       .then(dataFetched => {
         setData(dataFetched);
         console.log("NUM", dataFetched?.bpi?.USD?.rate);
-        const ratio = dataFetched?.bpi?.USD?.rate && parseFloat(dataFetched?.bpi?.USD?.rate.replace(",", ""))
-        setBitcoinToUSDRatio(ratio);
+        // const ratio = dataFetched?.bpi?.USD?.rate && parseFloat(dataFetched?.bpi?.USD?.rate.replace(",", ""))
+        // setBitcoinToUSDRatio(ratio);
       });
   }, [timeSliceID]);
 
   useEffect(() => {
     setInterval(() => {
-      console.log("INTERVAL", timeSliceID, foo);
+      // console.log("INTERVAL", timeSliceID, foo);
       setTimeSliceID(timeSliceID => timeSliceID + 1);
     }, 15 * 1000);
   }, []);
@@ -47,9 +41,9 @@ function App() {
   }
 
 
-  const isNumeric = a => {
-    return (a !== "" && !isNaN(a));
-  };
+  // const isNumeric = a => {
+  //   return (a !== "" && !isNaN(a));
+  // };
 
   return (
     <div className="App">
