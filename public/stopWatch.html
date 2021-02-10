@@ -1,0 +1,82 @@
+<!-- /*
+Please implement a stopwatch app using JS + HTML (just like the one of Google Search). 
+Its output should look like "12s 35" or "1m 32s 14" for example. 
+Provide one button: Start/Stop. No styling/CSS. 
+
+Add a “Reset” button if there’s extra time.
+*/ -->
+
+<style>
+    body {
+        font: 9vw "Arial Black";
+    }
+
+    button {
+        font: 6vw "Arial Black";
+        padding: .33em .66em;
+        border-radius: .6em;
+        width: 4.5em;
+        outline: none;
+    }
+</style>
+
+<div id="stopwatch">
+    <div class="display">00:00:00<div>00 / 100</div></div>
+  
+    <button class="start-stop-btn">Start</button>
+    <button class="reset-btn">Reset</button>
+  </div>
+
+  <script>
+
+  (function() {
+  
+  function pad(a) {
+  	return (a >= 10) ? `${a}` : `0${a}`;
+    }
+  
+      let timeStart = null, cumulativeDuration = 0, startButtonMode = true, timerID, 
+          displayElement = document.querySelector("#stopwatch .display"),
+          startStopButton = document.querySelector("#stopwatch .start-stop-btn"), 
+          resetButton = document.querySelector("#stopwatch .reset-btn");
+
+    startStopButton.addEventListener("click", ev => {
+      if (startButtonMode) {
+          timeStart = Date.now();
+          timerID = setInterval(() => {
+                 const now = Date.now(), timeElapsed = (now - timeStart) + cumulativeDuration;
+                 const hour = Math.floor(timeElapsed / 1000 / 60 / 60), minute = Math.floor(timeElapsed / 1000 / 60), second = Math.floor(timeElapsed / 1000) % 60, ms = Math.floor((timeElapsed % 1000) / 10);
+                 displayElement.innerHTML = `${pad(hour)}:${pad(minute)}:${pad(second)}<div>${pad(ms)} / 100</div>`;
+          
+
+          }, 33);
+  
+        
+      } else {
+            //const now = Date.now(), minute = (now - timeStart) / 1000 / 60, second = ((now - timeStart) / 1000) % 60, ms = Math.round(((now - timeStart) - (second * 1000))/ 10);
+            //displayElement.innerHTML = `${minute}m ${second}s ${ms}`;
+        
+         clearInterval(timerID);
+         timerID = null;
+         cumulativeDuration += (Date.now() - timeStart);
+        
+      }
+      startStopButton.innerHTML = startButtonMode ? "Pause" : "Start";
+      startButtonMode = !startButtonMode;
+         
+    });
+    
+    resetButton.addEventListener("click", ev => {
+       if (timerID !== null) {
+         clearInterval(timerID);
+         timerID = null;
+       }
+       displayElement.innerHTML = "00:00:00<div>00 / 100</div>";
+       cumulativeDuration = 0;
+       startButtonMode = true;
+       startStopButton.innerHTML = "Start";
+    });
+
+
+}());
+</script>
