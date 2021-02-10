@@ -9,22 +9,35 @@ Add a “Reset” button if there’s extra time.
 <style>
     body {
         font: 9vw "Arial Black";
+        display: flex;
+     justify-content: center;
+  align-items: center;
+    }
+
+    #stopwatch {
+                display: flex;
+     justify-content: center;
+  align-items: center;
+  flex-flow: column;
     }
 
     button {
-        font: 6vw "Arial Black";
+        font: 3vw "Arial Black";
         padding: .33em .66em;
         border-radius: .6em;
-        width: 4.5em;
+        width: 5.1em;
         outline: none;
     }
 </style>
 
+<body>
 <div id="stopwatch">
     <div class="display">00:00:00<div>00 / 100</div></div>
-  
-    <button class="start-stop-btn">Start</button>
+  <div>
+  <button class="start-stop-btn">Start</button>
     <button class="reset-btn">Reset</button>
+  </div>
+    
   </div>
 
   <script>
