@@ -31,6 +31,8 @@ function App() {
   }, []);
 
   const priceOfBitcoin = () => {
+    if (!data?.bpi) return "";
+
     console.log("PRICE", data?.bpi?.USD?.rate);
     const priceString = data?.bpi?.USD?.rate;
     const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
@@ -39,7 +41,7 @@ function App() {
     // return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
     // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
 
-    return Math.round(price);
+    return `$${Math.round(price)}`;
   }
 
 
@@ -50,7 +52,7 @@ function App() {
   return (
     <div className="App">
 
-    ${ priceOfBitcoin() }
+    { priceOfBitcoin() }
       {/* <pre className="data">
         {JSON.stringify(data, null, 4)}
       </pre> */}
