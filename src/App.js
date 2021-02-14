@@ -12,12 +12,12 @@ function App() {
    const [timeSliceID, setTimeSliceID] = useState(0);
 
   useEffect(() => {
-    console.log("Fetching")
+    // console.log("Fetching");
     fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
       .then(res => res.json())
       .then(dataFetched => {
         setData(dataFetched);
-        console.log("NUM", dataFetched?.bpi?.USD?.rate);
+        // console.log("NUM", dataFetched?.bpi?.USD?.rate);
         // const ratio = dataFetched?.bpi?.USD?.rate && parseFloat(dataFetched?.bpi?.USD?.rate.replace(",", ""))
         // setBitcoinToUSDRatio(ratio);
       });
@@ -33,7 +33,7 @@ function App() {
   const priceOfBitcoin = () => {
     if (!data?.bpi) return "";
 
-    console.log("PRICE", data?.bpi?.USD?.rate);
+    // console.log("PRICE", data?.bpi?.USD?.rate);
     const priceString = data?.bpi?.USD?.rate;
     const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
     // const priceRounded = Math.round(+price * 100) / 100;
