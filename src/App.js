@@ -9,7 +9,8 @@ import './App.css';
 
 function App() {
   const [data, setData] = useState({});
-   const [timeSliceID, setTimeSliceID] = useState(0);
+  const [timeSliceID, setTimeSliceID] = useState(0);
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     // console.log("Fetching");
@@ -17,6 +18,7 @@ function App() {
       .then(res => res.json())
       .then(dataFetched => {
         setData(dataFetched);
+        setToggle(!toggle);
         // console.log("NUM", dataFetched?.bpi?.USD?.rate);
         // const ratio = dataFetched?.bpi?.USD?.rate && parseFloat(dataFetched?.bpi?.USD?.rate.replace(",", ""))
         // setBitcoinToUSDRatio(ratio);
@@ -51,8 +53,9 @@ function App() {
 
   return (
     <div className="App">
-
-    { priceOfBitcoin() }
+      <div className={toggle ? "fade-out" : ""}>
+        {priceOfBitcoin()}
+      </div>
       {/* <pre className="data">
         {JSON.stringify(data, null, 4)}
       </pre> */}
