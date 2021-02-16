@@ -13,6 +13,9 @@ function App() {
 
   useEffect(() => {
     // console.log("Fetching");
+    // https://developers.coinbase.com/docs/wallet/guides/price-data
+    // https://api.coinbase.com/v2/prices/spot?currency=USD
+    if (timeSliceID % 2 === 0) {
     fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
       .then(res => res.json())
       .then(dataFetched => {
@@ -21,13 +24,15 @@ function App() {
         // const ratio = dataFetched?.bpi?.USD?.rate && parseFloat(dataFetched?.bpi?.USD?.rate.replace(",", ""))
         // setBitcoinToUSDRatio(ratio);
       });
+    } 
+
   }, [timeSliceID]);
 
   useEffect(() => {
     setInterval(() => {
       // console.log("INTERVAL", timeSliceID, foo);
       setTimeSliceID(timeSliceID => timeSliceID + 1);
-    }, 15 * 1000);
+    }, 6 * 1000);
   }, []);
 
   const priceOfBitcoin = () => {
@@ -52,7 +57,10 @@ function App() {
   return (
     <div className="App">
 
-    { priceOfBitcoin() }
+<div className={timeSliceID % 2 === 0 ? "blur-and-back" : ""}>
+{ priceOfBitcoin() }
+</div>
+   
       {/* <pre className="data">
         {JSON.stringify(data, null, 4)}
       </pre> */}
