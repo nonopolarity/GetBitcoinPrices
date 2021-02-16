@@ -7,13 +7,57 @@ import './App.css';
 // https://u5jxv.csb.app/
 // https://codesandbox.io/s/dazzling-hodgkin-u5jxv
 
+const source = (new URLSearchParams(document.location.search)).get("source") === "coinbase" ? "coinbase" : "coindesk";
+
+const dataIO = {};
+
+if (source === "coinbase") {
+  console.log("source is coinbase");
+  dataIO.url = "https://api.coinbase.com/v2/prices/spot?currency=USD";
+  dataIO.getPriceFromData = data => {
+
+
+    if (!data?.data?.amount) return "";
+
+    // console.log("PRICE", data?.bpi?.USD?.rate);
+    const priceString = data?.data?.amount;
+    const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
+    // const priceRounded = Math.round(+price * 100) / 100;
+
+    // return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
+    // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
+
+    return `$${Math.round(price)}`;
+  };
+} else {
+  console.log("source is coindesk");
+  dataIO.url = "https://api.coindesk.com/v1/bpi/currentprice.json";
+  dataIO.getPriceFromData = data => {
+    if (!data?.bpi) return "";
+
+    // console.log("PRICE", data?.bpi?.USD?.rate);
+    const priceString = data?.bpi?.USD?.rate;
+    const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
+    // const priceRounded = Math.round(+price * 100) / 100;
+
+    // return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
+    // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
+
+    return `$${Math.round(price)}`;
+  }
+}
+
 function App() {
   const [data, setData] = useState({});
-   const [timeSliceID, setTimeSliceID] = useState(0);
+  const [timeSliceID, setTimeSliceID] = useState(0);
+
+
+  // https://api.coinbase.com/v2/prices/spot?currency=USD
 
   useEffect(() => {
     // console.log("Fetching");
-    fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
+    // fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
+    fetch(dataIO.url)
       .then(res => res.json())
       .then(dataFetched => {
         setData(dataFetched);
@@ -31,17 +75,22 @@ function App() {
   }, []);
 
   const priceOfBitcoin = () => {
-    if (!data?.bpi) return "";
 
-    // console.log("PRICE", data?.bpi?.USD?.rate);
-    const priceString = data?.bpi?.USD?.rate;
-    const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
-    // const priceRounded = Math.round(+price * 100) / 100;
+    return dataIO.getPriceFromData(data);
 
-    // return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
-    // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
+    // return data?.data?.amount;
 
-    return `$${Math.round(price)}`;
+    // if (!data?.bpi) return "";
+
+    // // console.log("PRICE", data?.bpi?.USD?.rate);
+    // const priceString = data?.bpi?.USD?.rate;
+    // const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
+    // // const priceRounded = Math.round(+price * 100) / 100;
+
+    // // return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
+    // // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
+
+    // return `$${Math.round(price)}`;
   }
 
 
@@ -52,9 +101,10 @@ function App() {
   return (
     <div className="App">
 
-    { priceOfBitcoin() }
+      { priceOfBitcoin()}
       {/* <pre className="data">
-        {JSON.stringify(data, null, 4)}
+        {{JSON.stringify(data, null, 4)}}
+        {source}
       </pre> */}
     </div>
   );
