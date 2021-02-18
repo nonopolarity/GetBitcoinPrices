@@ -11,8 +11,9 @@ const source = (new URLSearchParams(document.location.search)).get("source") ===
 
 const dataIO = {};
 
+console.log(`source is ${source}`);
+
 if (source === "coinbase") {
-  console.log("source is coinbase");
   dataIO.url = "https://api.coinbase.com/v2/prices/spot?currency=USD";
   dataIO.getPriceFromData = data => {
 
@@ -30,7 +31,7 @@ if (source === "coinbase") {
     return `$${Math.round(price)}`;
   };
 } else {
-  console.log("source is coindesk");
+  // console.log("source is coindesk");
   dataIO.url = "https://api.coindesk.com/v1/bpi/currentprice.json";
   dataIO.getPriceFromData = data => {
     if (!data?.bpi) return "";
