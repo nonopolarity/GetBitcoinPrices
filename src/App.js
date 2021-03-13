@@ -11,6 +11,7 @@ const source = (new URLSearchParams(document.location.search)).get("source") ===
 
 const dataIO = {};
 
+console.log("start");
 console.log(`source is ${source}`);
 
 if (source === "coinbase") {
@@ -60,12 +61,13 @@ function App() {
     // fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
     fetch(dataIO.url)
       .then(res => res.json())
-      .then(dataFetched => {
-        setData(dataFetched);
+      .then(
+        setData
         // console.log("NUM", dataFetched?.bpi?.USD?.rate);
         // const ratio = dataFetched?.bpi?.USD?.rate && parseFloat(dataFetched?.bpi?.USD?.rate.replace(",", ""))
         // setBitcoinToUSDRatio(ratio);
-      });
+      )
+      .catch(console.error);
   }, [timeSliceID]);
 
   useEffect(() => {
