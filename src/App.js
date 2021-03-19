@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 // import pluralize from "pluralize";
 
-import './App.css';
+import "./App.css";
 
-// Demo: 
+// Demo:
 // https://u5jxv.csb.app/
 // https://codesandbox.io/s/dazzling-hodgkin-u5jxv
 
-const source = (new URLSearchParams(document.location.search)).get("source") === "coinbase" ? "coinbase" : "coindesk";
+const source =
+  new URLSearchParams(document.location.search).get("source") === "coinbase"
+    ? "coinbase"
+    : "coindesk";
 
 const dataIO = {};
 
@@ -16,14 +19,14 @@ console.log(`source is ${source}`);
 
 if (source === "coinbase") {
   dataIO.url = "https://api.coinbase.com/v2/prices/spot?currency=USD";
-  dataIO.getPriceFromData = data => {
-
-
+  dataIO.getPriceFromData = (data) => {
     if (!data?.data?.amount) return "";
 
     // console.log("PRICE", data?.bpi?.USD?.rate);
     const priceString = data?.data?.amount;
-    const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
+    const price = +(priceString !== undefined
+      ? priceString.replace(",", "")
+      : null);
     // const priceRounded = Math.round(+price * 100) / 100;
 
     // return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
@@ -34,25 +37,26 @@ if (source === "coinbase") {
 } else {
   // console.log("source is coindesk");
   dataIO.url = "https://api.coindesk.com/v1/bpi/currentprice.json";
-  dataIO.getPriceFromData = data => {
+  dataIO.getPriceFromData = (data) => {
     if (!data?.bpi) return "";
 
     // console.log("PRICE", data?.bpi?.USD?.rate);
     const priceString = data?.bpi?.USD?.rate;
-    const price = +(priceString !== undefined ? priceString.replace(",", "") : null);
+    const price = +(priceString !== undefined
+      ? priceString.replace(",", "")
+      : null);
     // const priceRounded = Math.round(+price * 100) / 100;
 
     // return priceRounded.toLocaleString(undefined, {minimumFractionDigits: 2});
     // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
 
     return `$${Math.round(price)}`;
-  }
+  };
 }
 
 function App() {
   const [data, setData] = useState({});
   const [timeSliceID, setTimeSliceID] = useState(0);
-
 
   // https://api.coinbase.com/v2/prices/spot?currency=USD
 
@@ -60,7 +64,7 @@ function App() {
     // console.log("Fetching");
     // fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
     fetch(dataIO.url)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(
         setData
         // console.log("NUM", dataFetched?.bpi?.USD?.rate);
@@ -73,12 +77,12 @@ function App() {
   useEffect(() => {
     setInterval(() => {
       // console.log("INTERVAL", timeSliceID, foo);
-      setTimeSliceID(timeSliceID => timeSliceID + 1);
+      setTimeSliceID((timeSliceID) => timeSliceID + 1);
     }, 15 * 1000);
   }, []);
 
-  const priceOfBitcoin = () => {
 
+  const priceOfBitcoin = () => {
     return dataIO.getPriceFromData(data);
 
     // return data?.data?.amount;
@@ -94,8 +98,11 @@ function App() {
     // // Math.round(+(data?.bpi?.USD?.rate) * 100) / 100;
 
     // return `$${Math.round(price)}`;
-  }
+  };
 
+  useEffect(() => {
+    document.title = `${priceOfBitcoin()} - Bitcoin Price`;
+  }, [priceOfBitcoin()]);
 
   // const isNumeric = a => {
   //   return (a !== "" && !isNaN(a));
@@ -103,8 +110,7 @@ function App() {
 
   return (
     <div className="App">
-
-      { priceOfBitcoin()}
+      {priceOfBitcoin()}
       {/* <pre className="data">
         {{JSON.stringify(data, null, 4)}}
         {source}
